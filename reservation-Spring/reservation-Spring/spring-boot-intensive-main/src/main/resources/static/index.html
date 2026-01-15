@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking.com Clone | Official Site</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        :root {
+            --booking-blue: #003580;
+            --booking-accent: #006ce4;
+            --booking-yellow: #ffb700;
+        }
+        body { background-color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        .header { background-color: var(--booking-blue); color: white; padding: 15px 0 60px 0; }
+        .nav-link { color: white !important; font-weight: 500; }
+        .hero-section { margin-top: -45px; }
+        .search-box {
+            background-color: var(--booking-yellow);
+            padding: 4px;
+            border-radius: 8px;
+            display: flex;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .search-input-group {
+            background-color: white;
+            border-radius: 4px;
+            margin: 2px;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border: 2px solid transparent;
+        }
+        .search-input-group:hover { border-color: #e7e7e7; }
+        .search-input-group i { color: #595959; margin-right: 10px; font-size: 1.2rem; }
+        .search-input-group input { border: none; outline: none; width: 100%; font-size: 0.95rem; }
+        .btn-search {
+            background-color: var(--booking-accent);
+            color: white;
+            border: none;
+            padding: 10px 32px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin: 2px;
+        }
+        .btn-search:hover { background-color: #0056b3; }
+        .card { border: none; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 24px; background: white; }
+        .card-title { color: var(--booking-accent); font-weight: 700; margin-bottom: 4px; }
+        .property-type { font-size: 0.85rem; color: #595959; }
+        .rating-badge { background-color: var(--booking-blue); color: white; padding: 4px 8px; border-radius: 4px 4px 4px 0; font-weight: 700; }
+        .price-text { font-size: 1.3rem; font-weight: 700; color: #1a1a1a; }
+        .section-title { font-size: 1.5rem; font-weight: 700; margin: 32px 0 16px 0; }
+        .status-badge { font-size: 0.8rem; padding: 4px 8px; }
+        .pointer { cursor: pointer; }
+        .hidden-section { display: none; }
+        .search-results-section { margin-top: 40px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold m-0">Booking.com</h2>
+                <div class="d-none d-md-flex gap-4">
+                    <span class="nav-link">UAH</span>
+                    <i class="bi bi-question-circle fs-5"></i>
+                    <button class="btn btn-outline-light btn-sm px-3">List your property</button>
+                    <button class="btn btn-light btn-sm px-3 text-primary fw-bold">Register</button>
+                    <button class="btn btn-light btn-sm px-3 text-primary fw-bold">Sign in</button>
+                </div>
+            </div>
+            <nav class="d-flex gap-4">
+                <div class="nav-link border border-light rounded-pill px-3 py-2 bg-white bg-opacity-10 pointer" onclick="showSection('stays', this)"><i class="bi bi-tsunami me-2"></i>Stays</div>
+                <div class="nav-link pointer" onclick="showSection('flights', this)"><i class="bi bi-airplane me-2"></i>Flights</div>
+                <div class="nav-link pointer" onclick="showSection('car-rentals', this)"><i class="bi bi-car-front me-2"></i>Car rentals</div>
+                <div class="nav-link pointer" onclick="showSection('attractions', this)"><i class="bi bi-map me-2"></i>Attractions</div>
+                <div class="nav-link pointer" onclick="showSection('taxis', this)"><i class="bi bi-taxi-front me-2"></i>Airport taxis</div>
+            </nav>
+            <h1 class="mt-5 fw-bold display-5">Find your next stay</h1>
+            <p class="fs-4">Search deals on hotels, homes, and much more...</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero-section" id="stays-section">
+            <form id="bookingForm" class="search-box">
+                <div class="search-input-group">
+                    <i class="bi bi-geo-alt"></i>
+                    <input type="text" id="citySearch" placeholder="Where are you going?" required value="Kyiv">
+                </div>
+                <div class="search-input-group">
+                    <i class="bi bi-calendar3"></i>
+                    <input type="date" id="startDate" required>
+                    <span class="mx-2 text-muted">—</span>
+                    <input type="date" id="endDate" required>
+                </div>
+                <div class="search-input-group">
+                    <i class="bi bi-person"></i>
+                    <input type="number" id="adultsCount" placeholder="Adults" required value="2">
+                </div>
+                <button type="submit" class="btn-search">Search</button>
+            </form>
+        </section>
+
+        <section id="other-sections" class="hidden-section mt-5 p-5 bg-white rounded shadow-sm text-center">
+            <h3 id="section-title-display">Section Title</h3>
+            <p class="text-muted">This feature is coming soon! Stay tuned for updates.</p>
+            <button class="btn btn-primary" onclick="showSection('stays', document.querySelector('.nav-link'))">Back to Stays</button>
+        </section>
+
+        <div id="stays-content">
+            <div id="searchResults" class="search-results-section hidden-section">
+                <h2 class="section-title">Search results for <span id="searchCityName"></span></h2>
+                <div id="roomList" class="row"></div>
+            </div>
+
+            <h2 class="section-title">Trending destinations</h2>
+            <div class="row row-cols-1 row-cols-md-2 g-4 mb-5">
+                <div class="col">
+                    <div class="card bg-dark text-white h-100 pointer" style="min-height: 250px; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://guide.kyivcity.gov.ua/storage/2021/04/05/850f7574360a4843477196095037d894b9f074a8.jpg'); background-size: cover;" data-bs-toggle="modal" data-bs-target="#kyivModal">
+                        <div class="card-img-overlay d-flex flex-column justify-content-end">
+                            <h3 class="card-title text-white">Kyiv</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card bg-dark text-white h-100 pointer" style="min-height: 250px; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://ukr-prokat.com/wp-content/uploads/2020/09/lviv-town-hall.jpg'); background-size: cover;" data-bs-toggle="modal" data-bs-target="#lvivModal">
+                        <div class="card-img-overlay d-flex flex-column justify-content-end">
+                            <h3 class="card-title text-white">Lviv</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Kyiv Modal -->
+    <div class="modal fade" id="kyivModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 overflow-hidden">
+                <div class="modal-header border-0 position-absolute w-100 z-1" style="background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);">
+                    <h5 class="modal-title text-white">Kyiv Destinations</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="kyivCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://guide.kyivcity.gov.ua/storage/2021/04/05/850f7574360a4843477196095037d894b9f074a8.jpg" class="d-block w-100" alt="Kyiv 1">
+                                <div class="carousel-caption d-block">
+                                    <p class="bg-dark bg-opacity-50 rounded px-2">Independence Square</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://7chudes.in.ua/wp-content/uploads/2016/06/andriivska-tserkva-kyiv.jpg" class="d-block w-100" alt="Kyiv 2">
+                                <div class="carousel-caption d-block">
+                                    <p class="bg-dark bg-opacity-50 rounded px-2">Andriyivskyy Descent</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://g.dennikn.sk/ext/2021/06/10/2418233/1b4a6b0c-7b4c-4e4b-9b4b-9b4b9b4b9b4b.jpg" class="d-block w-100" alt="Kyiv 3">
+                                <div class="carousel-caption d-block">
+                                    <p class="bg-dark bg-opacity-50 rounded px-2">St. Sophia's Cathedral</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#kyivCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#kyivCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <span class="text-muted small">Explore Kyiv</span>
+                    <button type="button" class="btn btn-primary btn-sm px-4" data-bs-dismiss="modal" onclick="document.getElementById('citySearch').value='Kyiv'; searchRooms();">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lviv Modal -->
+    <div class="modal fade" id="lvivModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 overflow-hidden">
+                <div class="modal-header border-0 position-absolute w-100 z-1" style="background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);">
+                    <h5 class="modal-title text-white">Lviv Destinations</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="lvivCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://ukr-prokat.com/wp-content/uploads/2020/09/lviv-town-hall.jpg" class="d-block w-100" alt="Lviv 1">
+                                <div class="carousel-caption d-block">
+                                    <p class="bg-dark bg-opacity-50 rounded px-2">Town Hall</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://lviv.travel/image/news/92/83/1080x720/61c062829283e.jpg" class="d-block w-100" alt="Lviv 2">
+                                <div class="carousel-caption d-block">
+                                    <p class="bg-dark bg-opacity-50 rounded px-2">Opera House</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://village.com.ua/village/city/city-guide/301179-yak-pobachiti-spravzhniy-lviv-za-vihidni-radyat-mistsevi/images/original/1.jpg" class="d-block w-100" alt="Lviv 3">
+                                <div class="carousel-caption d-block">
+                                    <p class="bg-dark bg-opacity-50 rounded px-2">Old Town</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#lvivCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#lvivCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <span class="text-muted small">Experience Lviv</span>
+                    <button type="button" class="btn btn-primary btn-sm px-4" data-bs-dismiss="modal" onclick="document.getElementById('citySearch').value='Lviv'; searchRooms();">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const roomsData = {
+            'Kyiv': [
+                { id: 101, name: 'Deluxe Suite Pechersk', price: 'UAH 3,500', rating: 9.2, img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=400' },
+                { id: 102, name: 'Podil Heritage Apartment', price: 'UAH 2,200', rating: 8.8, img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=400' },
+                { id: 103, name: 'Main Square Studio', price: 'UAH 2,800', rating: 9.0, img: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=400' },
+                { id: 104, name: 'Skyline View Hotel', price: 'UAH 4,100', rating: 9.5, img: 'https://images.unsplash.com/photo-1551882547-ff43c63ef53d?auto=format&fit=crop&q=80&w=400' }
+            ],
+            'Lviv': [
+                { id: 201, name: 'Old Town Luxury Palace', price: 'UAH 3,200', rating: 9.4, img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=400' },
+                { id: 202, name: 'Rynok Square Apartment', price: 'UAH 2,500', rating: 9.1, img: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&q=80&w=400' },
+                { id: 203, name: 'Opera View Loft', price: 'UAH 2,100', rating: 8.7, img: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&q=80&w=400' }
+            ]
+        };
+
+        const today = new Date().toISOString().split('T')[0];
+        const nextWeek = new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0];
+        document.getElementById('startDate').value = today;
+        document.getElementById('endDate').value = nextWeek;
+
+        function searchRooms() {
+            const city = document.getElementById('citySearch').value;
+            const cityNameSpan = document.getElementById('searchCityName');
+            const searchResults = document.getElementById('searchResults');
+            const roomList = document.getElementById('roomList');
+            
+            cityNameSpan.innerText = city;
+            roomList.innerHTML = '';
+            
+            const results = roomsData[city] || [];
+            
+            if (results.length === 0) {
+                roomList.innerHTML = '<div class="col-12 text-center p-4 bg-white rounded">No rooms found for this city. Try "Kyiv" or "Lviv".</div>';
+            } else {
+                results.forEach(room => {
+                    const col = document.createElement('div');
+                    col.className = 'col-12';
+                    col.innerHTML = `
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-3" style="min-height: 180px;">
+                                    <img src="${room.img}" style="width:100%; height:100%; object-fit:cover;">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h5 class="card-title">${room.name}</h5>
+                                                <div class="property-type"><i class="bi bi-geo-alt"></i> Center, ${city}</div>
+                                            </div>
+                                            <div class="text-end">
+                                                <div class="d-flex align-items-center justify-content-end gap-2">
+                                                    <div class="fw-bold">Excellent</div>
+                                                    <div class="rating-badge">${room.rating}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-between align-items-end">
+                                            <div>
+                                                <div class="text-success fw-bold small"><i class="bi bi-check-circle"></i> Free cancellation</div>
+                                                <div class="text-muted small">Price for ${document.getElementById('adultsCount').value} adults</div>
+                                                <div class="price-text">${room.price}</div>
+                                            </div>
+                                            <button class="btn btn-primary" onclick="bookRoom(${room.id}, '${room.name}')">Reserve Now</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    roomList.appendChild(col);
+                });
+            }
+            
+            searchResults.classList.remove('hidden-section');
+            searchResults.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function bookRoom(roomId, roomName) {
+            const reservation = {
+                userId: 1,
+                roomId: roomId,
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value
+            };
+
+            try {
+                const response = await fetch('/reservation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reservation)
+                });
+                if (response.ok) {
+                    alert(`Success! You have reserved ${roomName}.`);
+                } else {
+                    const error = await response.json();
+                    alert('Booking Error: ' + error.detailedMessage);
+                }
+            } catch (error) {
+                alert('Connection error');
+            }
+        }
+
+        document.getElementById('bookingForm').onsubmit = (e) => {
+            e.preventDefault();
+            searchRooms();
+        };
+
+        function showSection(section, element) {
+            const staysSection = document.getElementById('stays-section');
+            const staysContent = document.getElementById('stays-content');
+            const otherSections = document.getElementById('other-sections');
+            const titleDisplay = document.getElementById('section-title-display');
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('border', 'border-light', 'rounded-pill', 'bg-white', 'bg-opacity-10');
+            });
+            
+            if (section === 'stays') {
+                staysSection.classList.remove('hidden-section');
+                staysContent.classList.remove('hidden-section');
+                otherSections.classList.add('hidden-section');
+            } else {
+                staysSection.classList.add('hidden-section');
+                staysContent.classList.add('hidden-section');
+                otherSections.classList.remove('hidden-section');
+                titleDisplay.innerText = section.charAt(0).toUpperCase() + section.slice(1).replace('-', ' ');
+            }
+            
+            if (element) {
+                element.classList.add('border', 'border-light', 'rounded-pill', 'bg-white', 'bg-opacity-10');
+            }
+        }
+    </script>
+</body>
+</html>
